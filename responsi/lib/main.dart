@@ -10,8 +10,7 @@ import 'models/library.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  // Hive.registerAdapter(FavoriteShowAdapter());
-  // await Hive.openBox<FavoriteShow>('favorites');
+  Hive.registerAdapter(LibraryAdapter());
   await Hive.openBox<Library>('library');
   runApp(const MainApp());
 }
@@ -27,20 +26,20 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: Colors.black,
-        colorScheme: const ColorScheme.dark(primary: Colors.red),
+        colorScheme: const ColorScheme.dark(primary: Colors.blue),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.black,
           elevation: 0,
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Colors.black,
-          selectedItemColor: Colors.red,
+          selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.grey,
           type: BottomNavigationBarType.fixed,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.blue,
             foregroundColor: Colors.white,
             minimumSize: const Size.fromHeight(48),
             shape: RoundedRectangleBorder(

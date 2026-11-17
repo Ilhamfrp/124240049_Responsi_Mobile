@@ -11,11 +11,12 @@ class LibraryController extends GetxController {
 
     if (index == -1) {
       await _box.add(
-        Library(
+               Library(
           id: game.id,
           name: game.title,
           image: game.thumbnail,
-          rating: game.ratingText,
+          genre: game.genres.join(', '),
+          platform: game.platform,
         ),
       );
       Get.snackbar('library', '${game.title} ditambahkan ke library',

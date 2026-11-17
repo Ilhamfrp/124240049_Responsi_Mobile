@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(title: const Text('Hydra Games!')),
       body: Obx(() {
         if (controller.isLoading) {
-          return const Center(child: CircularProgressIndicator(color: Colors.red));
+          return const Center(child: CircularProgressIndicator(color: Colors.blue));
         }
         if (controller.errorMessage.isNotEmpty) {
           return Center(
@@ -34,83 +34,27 @@ class HomePage extends StatelessWidget {
             ),
           );
         }
-        return GridView.builder(
-          padding: const EdgeInsets.all(12),
+        return ListView.builder(
           itemCount: controller.games.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            childAspectRatio: 0.62,
-          ),
           itemBuilder: (context, index) {
-            final show = controller.games[index];
-            return GestureDetector(
-              onTap: () => Get.toNamed(AppRoutes.detail, arguments: show.id),
-              child: Card(
-                color: const Color(0xFF1C1C1E),
-                clipBehavior: Clip.antiAlias,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: show.thumbnail == null
-                            ? const Icon(Icons.movie, size: 48, color: Colors.grey)
-                            : Image.network(
-                                show.thumbnail!,
-                                fit: BoxFit.cover,
-                                loadingBuilder: (context, child, loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return const Center(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.red,
-                                    ),
-                                  );
-                                },
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(Icons.broken_image, color: Colors.grey),
-                              ),
-                      ),
+            final game = controller.games[index];
+            return ListTile(
+              onTap: () => Get.toNamed(AppRoutes.detail, arguments: game.id),
+              leading: game.thumbnail == null
+                  ? const Icon(Icons.videogame_asset, size: 50)
+                  : Image.network(
+                      game.thumbnail!,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            show.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            children: [
-                              show.genres.isNotEmpty
-                                  ? Text(
-                                      show.genres.join(', '),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  : const Text('-'),
-
-                        ],
-                      ),
-                  ],
-                    ),
+              title: Text(game.title),
+              subtitle: Text(
+                '${game.genres.isEmpty ? '-' : game.genres.join(', ')}\n${game.platform}',
               ),
-            ],
-                ),
-              ), 
-            ); 
-              
-            
+              isThreeLine: true,
+              trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white54),
+            );
           },
         );
       }),

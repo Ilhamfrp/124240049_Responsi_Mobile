@@ -48,12 +48,10 @@ class LibraryPage extends StatelessWidget {
                         ),
                 ),
                 title: Text(fav.name, maxLines: 1, overflow: TextOverflow.ellipsis),
-                subtitle: Row(
-                  children: [
-                    const Icon(Icons.star, size: 14, color: Colors.amber),
-                    const SizedBox(width: 4),
-                    Text(fav.rating),
-                  ],
+                subtitle: Text(
+                  '${fav.genre} • ${fav.platform}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 trailing: IconButton(
                   icon: const Icon(Icons.delete, color: Colors.red),

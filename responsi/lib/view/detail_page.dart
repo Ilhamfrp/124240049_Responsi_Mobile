@@ -26,7 +26,7 @@ class DetailPage extends StatelessWidget {
       ),
       body: Obx(() {
         if (controller.isLoading) {
-          return const Center(child: CircularProgressIndicator(color: Colors.red));
+          return const Center(child: CircularProgressIndicator(color: Colors.blue));
         }
         final game = controller.game;
         if (game == null) {
@@ -63,6 +63,9 @@ class DetailPage extends StatelessWidget {
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
+          Text('Rilis: ${game.releaseDate}'),
+          Text('Publisher: ${game.publisher}'),
+          Text('Developer: ${game.developer}'),
           Row(
             children: [
               // const Icon(Icons.star, size: 18, color: Colors.amber),
@@ -71,13 +74,13 @@ class DetailPage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Text(
-            game.genres.isEmpty ? 'Genre: -' : game.genres.join(', '),
-            style: const TextStyle(color: Colors.grey),
+           Text(
+          '${game.genres.isEmpty ? '-' : game.genres.join(', ')} • ${game.platform}',
+           style: const TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 16),
           ValueListenableBuilder<Box<Library>>(
-            valueListenable: Hive.box<Library>('favorites').listenable(),
+            valueListenable: Hive.box<Library>('library').listenable(),
             builder: (context, box, child) {
               final isFav = favController.isFavorite(game.id);
               return Row(
@@ -92,22 +95,41 @@ class DetailPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Icon(
-                    isFav ? Icons.favorite : Icons.favorite_border,
-                    color: Colors.red,
-                  ),
+                
                 ],
               );
             },
           ),
-
+           const SizedBox(height: 20),
+          const Text(
+            'Screenshots',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 150,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: game.screenshots.length,
+              separatorBuilder: (context, index) => const SizedBox(width: 8),
+              itemBuilder: (context, index) => ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  game.screenshots[index],
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.broken_image),
+                ),
+              ),
+            ),
+          ),
           const SizedBox(height: 20),
           const Text(
             'Overview',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          Text(game.shortdescription, style: const TextStyle(height: 1.5)),
+          Text(game.description, style: const TextStyle(height: 1.5)),
         ],
       ),
     );

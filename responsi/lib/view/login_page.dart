@@ -13,7 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
   void _login() async {
-    final email = _usernameController.text.trim();
+    final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
     if (email == '124240049@gmail.com' && password == '123') {
@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.movie_outlined, size: 72, color: Colors.red),
+                const Icon(Icons.movie_outlined, size: 72, color: Colors.blue),
                 const SizedBox(height: 8),
                 const Text(
                   'Hydra Games!',
@@ -71,8 +71,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 32),
                 TextField(
-                  controller: _usernameController,
-                  decoration: _inputDecoration('Username', Icons.person_outline),
+                  controller: _emailController,
+                  decoration: _inputDecoration('Email', Icons.email_outlined),
                 ),
                 const SizedBox(height: 16),
                 TextField(

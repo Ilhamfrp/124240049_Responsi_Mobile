@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
+import '../../models/library.dart';
 import '../../route/app_rute.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -22,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void _loadEmail() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _email = prefs.getString('username') ?? '-';
+      _email = prefs.getString('email') ?? '-';
     });
   }
   void _logout() async {
@@ -53,14 +54,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Kesan: Praktikum mobile sangat menyenangkan seperti es teh\n'
-                'Pesan: Semangat terus ya Kak Aslab, makasih atas bimbingannya',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey, height: 1.5),
+               ValueListenableBuilder<Box<Library>>(
+                valueListenable: Hive.box<Library>('library').listenable(),
+                builder: (context, box, child) => Text(
+                  'Jumlah game di library: ${box.length}',
+                  style: const TextStyle(fontSize: 16),
+                ),
               ),
               const SizedBox(height: 32),
-              ElevatedButton(onPressed: _logout, child: const Text('Logout')),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red,),
+                onPressed: _logout, 
+              child: 
+              const Text('Logout')
+              ),
             ],
           ),
         ),
